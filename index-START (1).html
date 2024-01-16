@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d"); // you write on context
+      // canvas on the web is like a block of pixels and you draw on this
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.strokeStyle = "#BADA55";
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+
+      let isDrawing = false; // this is so that it only draws when clicking down and dragging the mouse
+      let lastX = 0; // start and stop of line
+      let lastY = 0;
+
+      function draw(e) {
+        if (!isDrawing) return; // stop the function from running when not mouse down
+        console.log(e);
+        ctx.beginPath(); // start a path
+
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY); // these values come from the event that happened above ^^^
+        ctx.stroke();
+        // destructuring an array
+        [lastX, lastY] = [e.offsetX, e.offsetY]; // same as lastX = e.offsetX and lastY = e.offsetY
+      }
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false)); // if you drag the mouse out while mouse down it will think when you come back on the page that mouse is down since you never triggered a mouseup on that event
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
+</html>
