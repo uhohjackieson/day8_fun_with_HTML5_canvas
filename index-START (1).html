@@ -17,11 +17,13 @@
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
       ctx.lineWidth = "100";
+      ctx.globalCompositeOperation = "multiply";
 
       let isDrawing = false; // this is so that it only draws when clicking down and dragging the mouse
       let lastX = 0; // start and stop of line
       let lastY = 0;
       let hue = 0;
+      let direction = true;
 
       function draw(e) {
         if (!isDrawing) return; // stop the function from running when not mouse down
@@ -39,6 +41,14 @@
 
         if (hue >= 360) {
           hue = 0;
+        }
+        if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+          direction = !direction;
+        }
+        if (direction) {
+          ctx.lineWidth++;
+        } else {
+          ctx.lineWidth--;
         }
       }
       canvas.addEventListener("mousedown", (e) => {
